@@ -674,7 +674,9 @@ public class Lei {
 
 **方法名可以与构造函数重名。**
 
-**不能用default修饰构造函数**
+**不能用default修饰构造函数，**
+
+**访问控制修饰符，default是指不写修饰符**
 
 ```java
 class Teacher {
@@ -811,4 +813,236 @@ Woman woman = null;
 if(human instanceof Woman)
     woman = (Woman) human;
 ```
+
+
+
+
+
+### **扩展**
+
+Junit
+
+```java
+import org.junit.*;
+
+public class JunitFlowTest {
+    @Before
+    public void setUp() throws Exception {
+        System.out.println("before...");
+    }
+    @After
+    public void tearDown() {
+        System.out.println("after");
+    }
+
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        System.out.println("beforeClass...");
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() {
+        System.out.println("afterClass...");
+    }
+    @Test
+    public void test1() {
+        System.out.println("test1方法...");
+    }
+
+    @Test
+    public void test2() {
+        System.out.println("test2方法...");
+    }
+}
+```
+
+```
+beforeClass...
+before...
+test1方法...
+after
+before...
+test2方法...
+after
+afterClass...
+```
+
+
+
+
+
+### 4 抽象类&抽象方法
+
+abstract 类是抽象类，abstract方法是抽象方法。
+
+**抽象类与抽象方法的总结**
+
+抽象类和抽象方法的产生是为了维护继承链的逻辑，即抽象类相对于那些普通的类处于继承树的根部。
+抽象方法的产生完全是为了迎合抽象类的存在：抽象方法只能写在抽象类中！
+抽象类的字段（反正也没有abstract抽象字段一说）只要像正常的继承关系那样使用就好了。
+被abstract关键字修饰的类叫抽象类。
+被abstract关键字修饰的方法叫抽象方法
+
+**注意：**
+
+1、抽象类（abstract class）不能被实例化！！
+2、抽象类是有构造器的（所有类都有构造器）
+3、抽象类以有抽象方法，也可以没有抽象方法；但是抽象方法只能存在于抽象类中。
+4、抽象类中的非抽象方法如同在非抽象类中一样，正常继承使用。
+5、抽象方法（abstract method）只能存在于抽象类中！！
+6、抽象方法所在的类，一定是抽象类（因为抽象方法是没有方法体的，如果所在的类不是抽象类，那么该类可以实例化对象，调用抽象方法，然后无方法体去具体实现功能，则矛盾）
+7、不存在所谓的抽象静态方法（abstract static，永远不要这样干！）
+
+8、抽象类可以有成员变量、普通方法和静态方法
+
+#### 4.1 抽象方法
+
+只有方法的声明，没有方法体，即没有{}，以分号 ; 结尾，使用 abstract 关键字修饰。
+
+**抽象方法不能用private、final、static、native修饰。**
+
+#### 4.2 抽象类
+
+抽象类不能实例化，不能直接创建对象。抽象类是用来被继承的，**继承抽象类的子类必须重写父类所有的抽象方法**。否则，该子类也必须声明为抽象类，使用 abstract 关键字修饰。
+
+抽象类也是类，因此原来类中可以有的成员，抽象类都可以有，那么抽象类不能直接创建对象，为什么还有构造器呢？供子类调用，子类创建对象时，需要为从父类继承的属性初始化。
+
+抽象类不能使用final修饰。
+
+
+```java
+public class test {
+
+    @Test
+    public void test1() {
+        Children children = new Children();
+        children.eat();
+        Person.sleep();
+    }
+}
+
+
+abstract class Person {
+    abstract void run();
+    abstract void walk();
+
+    void eat(){
+        System.out.println("eat");
+    }
+
+    static void sleep() {
+        System.out.println("sleep");
+    }
+}
+
+class Children extends Person {
+    void run(){
+        System.out.println("run");
+    }
+    void walk(){
+        System.out.println("walk");
+    }
+
+}
+
+```
+
+#### 4.3 abstract关键字
+
+1、可以用来修饰的结构：类、方法，不能用来修饰变量、代码块、构造器。
+
+2、不能和 abstract 一起使用的修饰符：
+
+外部类可用修饰符：abstract、final ，两种访问修饰符：public和缺省。其中abstract和final不能一起修饰类。
+方法可用修饰符：4种访问修饰符，static、final、abstract、native。不能共存的：native，abstract不行 因为都没有方法体，不知道是什么情况，会有歧义
+
+- abstract final 不能同时用来修饰类
+- abstract final 不能同时用来修饰方法
+- static abstract 不允许。因为抽象方法的调用需要使用方法的动态绑定机制，因此静态方法不能是抽象方法
+- private abstract 不允许。因为抽象方法必须要被继承类覆写，因此继承类必须能够访问抽象方法，所以抽象方法的访问权限不能是 private
+- 给 abstract 方法赋 default 访问权限，编译允许，但不推荐。因为这样会造成其他包（package）的类无法继承这个抽象类，因为这个抽象方法对其他包（package）的类不可见
+
+### 5 final
+
+final在Java中是一个保留的关键字，可以声明成员变量、方法、类以及本地变量。
+
+凡是对成员变量或者本地变量(在方法中的或者代码块中的变量称为本地变量)声明为final的都叫作final变量。final变量经常和static关键字一起使用，作为常量。
+final变量是只读的。
+
+方法前面加上final关键字，代表这个方法不可以被子类的方法重写。final方法比非final方法要快，因为在编译的时候已经静态绑定了，不需要在运行时再动态绑定。
+
+使用final来修饰的类叫作final类。final类通常功能是完整的，它们不能被继承。Java中有许多类是final的，譬如String, Interger以及其他包装类。
+
+- 用 final 修饰成员变量时表示该变量是一个常量，在初始化后不能被改变 
+
+- - 使用 final 关键字修饰类的静态变量，须在定义时或者在静态块中进行初始化
+  - 使用 final 关键字修饰类的实例变量，可以在动态块中、也可以在每个构造函数中进行初始化
+
+**关于final的重要知识点：**
+
+1. final关键字可以用于成员变量、本地变量、方法以及类。
+
+2. final成员变量必须在声明的时候初始化或者在构造器中初始化，否则就会报编译错误。
+
+3. 你不能够对final变量再次赋值。
+
+4. 本地变量必须在声明时赋值。
+
+5. 在匿名类中所有变量都必须是final变量。
+
+6. final方法不能被重写。
+
+7. final类不能被继承。
+
+8. 接口中声明的所有变量本身是final的。
+
+9. final和abstract这两个关键字是反相关的，final类就不可能是abstract的。
+
+10. final方法在编译阶段绑定，称为静态绑定(static binding)。
+
+11. 没有在声明时初始化final变量的称为空白final变量(blank final variable)，它们必须在构造器中初始化，或者调用this()初始化。不这么做的话，编译器会报错“final变量(变量名)需要进行初始化”。
+
+12. 将类、方法、变量声明为final能够提高性能，这样JVM就有机会进行估计，然后优化。
+
+13. 按照Java代码惯例，final变量就是常量，而且通常常量名要大写：
+    private final int COUNT = 10;
+
+14. 对于集合对象声明为final指的是引用不能被更改，但是你可以向其中增加，删除或者改变内容，譬如：
+
+    ```java
+    private final List Loans = new ArrayList();
+    list.add(“home loan”);  //valid
+    list.add("personal loan"); //valid
+    loans = new Vector();  //not valid
+    ```
+
+### 6 接口
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

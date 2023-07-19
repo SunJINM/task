@@ -299,6 +299,53 @@ class Coordinate {
     }
 }
 
+         class CoordinatePoint {
+            private double x; // 横坐标
+            private double y; // 纵坐标
+
+            // 构造方法
+            public CoordinatePoint(double x, double y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            // 计算两点之间的距离
+            private double distanceTo(double x2, double y2) {
+                double dx = x2 - this.x;
+                double dy = y2 - this.y;
+                return Math.sqrt(dx * dx + dy * dy);
+            }
+
+            // 计算坐标点到原点的距离
+            public double distanceToOrigin() {
+                return distanceTo(0, 0);
+            }
+
+            // 计算当前坐标点到另外任意坐标点的距离
+            public double distanceTo(CoordinatePoint otherPoint) {
+                return distanceTo(otherPoint.x, otherPoint.y);
+            }
+
+            // 计算给定两个坐标点的距离
+            public static double distanceBetween(CoordinatePoint point1, CoordinatePoint point2) {
+                return point1.distanceTo(point2);
+            }
+
+
+            /*public static void main(String[] args) {
+                CoordinatePoint point1 = new CoordinatePoint(3, 4);
+                CoordinatePoint point2 = new CoordinatePoint(6, 8);
+
+                System.out.println("Point1: (" + point1.getX() + ", " + point1.getY() + ")");
+                System.out.println("Point2: (" + point2.getX() + ", " + point2.getY() + ")");
+
+                System.out.println("Distance from Point1 to origin: " + point1.distanceToOrigin());
+                System.out.println("Distance from Point2 to origin: " + point2.distanceToOrigin());
+                System.out.println("Distance between Point1 and Point2: " + point1.distanceTo(point2));
+                System.out.println("Distance between Point1 and Point2 (using static method): " + CoordinatePoint.distanceBetween(point1, point2));
+            }*/
+        }
+
 /**
  * 作业5：验证下原因：对于使用了以上四个注解的 Query、PO、BO、VO 类，
  * 如果属性有默认值，那么需要在属性上增加注解 @Builder.Default

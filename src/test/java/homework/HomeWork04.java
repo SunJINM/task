@@ -72,12 +72,12 @@ public class HomeWork04 {
 
     @Test
     public void test03() {
-        Coordinate point1 = new Coordinate(1, 1);
-        Coordinate point2 = new Coordinate(2, 2);
+        CoordinatePoint point1 = new CoordinatePoint(1, 1);
+        CoordinatePoint point2 = new CoordinatePoint(2, 2);
 
-        System.out.println("点 (" + point1.getX() + ", " + point1.getY() + " ) 距离原点的距离："  + point1.distanceToOrigin());
+        System.out.println("点point1距离原点的距离："  + point1.distanceTo());
         System.out.println("当前点与point1距离："  + point2.distanceTo(point1));
-        System.out.println("point1 与 point2 之间的距离： " + Coordinate.distanceBetween(point1, point2));
+        System.out.println("point1 与 point2 之间的距离： " + CoordinatePoint.distanceTo(point1, point2));
 
     }
 
@@ -181,31 +181,50 @@ enum DayOfWeekLombok {
 
 @Data
 @AllArgsConstructor
-class Coordinate {
-    private double x; //横坐标
-    private double y; //纵坐标
+class CoordinatePoint {
+    private double x; // 横坐标
+    private double y; // 纵坐标
 
-
-    //计算坐标点到原点的距离
-    public double distanceToOrigin() {
-        return Math.sqrt(x * x + y * y);
+    /**
+     * 计算两点之间的距离
+     * @param x2
+     * @param y2
+     * @return 两点之间的距离
+     */
+    private double distanceTo(double x2, double y2) {
+        double dx = x2 - this.x;
+        double dy = y2 - this.y;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
-    //计算当前坐标点到另外任意坐标点的距离
-    public double distanceTo(Coordinate point) {
-        double distanceX = x - point.x;
-        double distanceY = y - point.y;
-        return Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+    /**
+     * 计算坐标点到原点的距离
+     * @return 坐标点到原点的距离
+     */
+    public double distanceTo() {
+        return distanceTo(0, 0);
     }
 
-    //计算给定两个坐标点的距离
-    public static double distanceBetween(Coordinate point1, Coordinate point2) {
-        double distanceX = point1.x - point2.x;
-        double distanceY = point1.y - point2.y;
-        return Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    /**
+     * 计算当前坐标点到另外任意坐标点的距离
+     * @param otherPoint 另外一点
+     * @return 当前坐标点到另外任意坐标点的距离
+     */
+    public double distanceTo(CoordinatePoint otherPoint) {
+        return distanceTo(otherPoint.x, otherPoint.y);
+    }
+
+    /**
+     * 计算给定两个坐标点的距离
+     * @param point1
+     * @param point2
+     * @return 两个坐标点的距离
+     */
+    public static double distanceTo(CoordinatePoint point1, CoordinatePoint point2) {
+        return point1.distanceTo(point2);
     }
 }
-
 /**
  * 作业5：验证下原因：对于使用了以上四个注解的 Query、PO、BO、VO 类，
  * 如果属性有默认值，那么需要在属性上增加注解 @Builder.Default
